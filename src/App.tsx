@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Zoom from 'react-reveal/Zoom';
 import Fade from 'react-reveal/Fade';
 import Flip from 'react-reveal/Flip';
@@ -23,17 +23,26 @@ import 'swiper/swiper.css';
 import './App.scss'
 
 function App() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handleOnClick = (index: number) => {
+    setActiveIndex(index);
+    const dom = document.getElementById(`section-${index}`)
+    window.scrollTo({
+      top: dom?.offsetTop,
+      behavior: 'smooth',
+    });
+  };
   return (
     <div className='app'>
       {/* 头部 */}
-      <header className='header'>
+      <header id="section-0" className='header'>
         <nav className='header-nav'>
           <img className='header-nav-logo' src={HeaderConfig.logo} alt="" />
           <div className='header-nav-tabs'>
             {
               HeaderConfig.tabs.map((tab, index) => {
                 return (
-                  <div className={`header-nav-tab ${index === 0 ? 'active' : ''}`} key={index}>
+                  <div className={`header-nav-tab ${index === activeIndex ? 'active' : ''}`} key={index} onClick={() => handleOnClick(index)}>
                     {tab}
                   </div>
                 )
@@ -54,7 +63,7 @@ function App() {
 
       {/* 正文1 */}
       <Fade>
-        <section className='section1'>
+        <section id="section-1" className='section1'>
           <h1>{Section1Config.title}</h1>
           <div className='section1-content'>
             {
@@ -149,14 +158,14 @@ function App() {
                 }
               </Swiper>
             </div>
-            <img className='swiper-button-next' src={NextImg} alt=""/>
+            <img className='swiper-button-next' src={NextImg} alt="" />
           </div>
         </section>
       </Zoom>
 
       {/* 正文4 */}
       <Fade>
-        <section className='section4'>
+        <section id="section-2" className='section4'>
           <div className="section4-wrapper">
             <Flip>
               <div>{Section4Config.title}</div>
@@ -243,7 +252,6 @@ function App() {
                     <div className="section6-item-top">
                       <img src={img} alt="" />
                       <div>{info}</div>
-                      <span>more&gt;</span>
                     </div>
 
                     <div className="section6-item-bottom">
@@ -259,7 +267,7 @@ function App() {
       </Fade>
 
       {/* 底部 */}
-      <footer className='footer'>
+      <footer id="section-3" className='footer'>
         <div className="footer-wrapper">
           <img src={FooterConfig.logo} className="footer-logo" />
           <div className="footer-about">
@@ -277,7 +285,6 @@ function App() {
             </div>
           </div>
           <div className="footer-connect">
-
             <div className="footer-connect-title">{FooterConfig.connect.title}</div>
             <div className="footer-connect-content">
               {
@@ -291,6 +298,7 @@ function App() {
                   );
                 })
               }
+              <div className='footer-privacy' onClick={() => window.open('/privacy')}>隐私政策</div>
             </div>
           </div>
         </div>
